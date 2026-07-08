@@ -1,0 +1,15 @@
+# Trained model artifacts (regenerate by running notebooks 06/07)
+models/*.joblib
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
