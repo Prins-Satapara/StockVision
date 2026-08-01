@@ -238,8 +238,10 @@ Streamlit Dashboard      (app.py)
 
 > Screenshots below are placeholders — see the [`images/` folder note](#️-about-the-images-folder) above for how to generate and add them.
 
-### Overview
-![Dashboard Overview](images/dashboard_overview.png)
+### Metrics
+![Dashboard Overview](images/dashboard_metrics.png)
+### Price Chart
+![Dashboard Overview](images/dashboard_price_chart.png)
 
 ### RSI
 ![RSI](images/dashboard_rsi.png)
