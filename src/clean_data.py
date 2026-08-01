@@ -1,10 +1,10 @@
 import pandas as pd
 
 
-def data_cleaning(myFile, output_path):
+def data_cleaning(input_path, output_path):
 
     # Load dataset
-    df = pd.read_csv(myFile)
+    df = pd.read_csv(input_path)
 
     # Convert Date column
     df["Date"] = pd.to_datetime(df["Date"])

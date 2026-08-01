@@ -1,6 +1,20 @@
+# Data collection & processing
 pandas
 numpy
+yfinance
+
+# Visualization
 matplotlib
 seaborn
-yfinance
+plotly
+
+# Machine learning
+scikit-learn
+optuna
+joblib
+
+# Dashboard
+streamlit
+
+# Notebooks
 jupyter
