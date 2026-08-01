@@ -243,10 +243,10 @@ Streamlit Dashboard      (app.py)
 ### Price Chart
 ![Dashboard Overview](images/dashboard_price_chart.png)
 
-### RSI
+### Relative Strength Index (RSI)
 ![RSI](images/dashboard_rsi.png)
 
-### MACD
+### Moving Average Convergence Divergence (MACD)
 ![MACD](images/dashboard_macd.png)
 
 ---
