@@ -1,3 +1,9 @@
+# Data (regenerate via src/download_data.py -> clean_data.py -> feature_engineering.py -> prepare_ml_data.py)
+data/raw/
+data/cleaned/
+data/processed/
+data/ml_ready/
+
 # Trained model artifacts (regenerate by running notebooks 06/07)
 models/*.joblib
 
@@ -9,6 +15,10 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Editor
+.vscode/
+.idea/
 
 # OS
 .DS_Store
