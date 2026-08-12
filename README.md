@@ -256,7 +256,7 @@ Streamlit Dashboard      (app.py)
 Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/StockVision.git
+git clone https://github.com/Prins-Satapara/StockVision.git
 ```
 
 Move into the project directory
