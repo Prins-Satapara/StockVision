@@ -27,10 +27,7 @@ def download_stocks(save_path):
         # Case 1 :- CSV file is already exists.....
         if file_path.exists():
             
-            existing_df = pd.read_csv(
-                file_path, 
-                parse_dates=["Date"]
-            )
+            existing_df = pd.read_csv(file_path,  parse_dates=["Date"])
         
             last_date = existing_df["Date"].max()
             start_date = last_date + timedelta(days=1)
