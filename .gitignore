@@ -1,14 +1,8 @@
 # Data
-data/*
-!data/.gitkeep
-!data/cleaned/
-!data/cleaned/.gitkeep
-!data/ml_ready/
-!data/ml_ready/.gitkeep
-!data/processed/
-!data/processed/.gitkeep
-!data/raw/
-!data/raw/.gitkeep
+data/**/*
+!data/**/
+!data/**/.gitkeep
+data/**/*.csv
 
 # Trained Models
 models/final/*.joblib
