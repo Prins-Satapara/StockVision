@@ -41,6 +41,8 @@ STOCKS = [
 ]
 
 FEATURES = [
+    "Adj Close",
+    "Adj_Daily_Return",
     "Daily_Return",
     "Return_Lag_1",
     "Return_Lag_2",

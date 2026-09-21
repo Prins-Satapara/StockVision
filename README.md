@@ -36,13 +36,23 @@ Technical indicators including:
 - Rolling Volatility (20 day)
 
 ### 🤖 Machine Learning
-Implemented multiple classification models to predict next-day price direction (up/down):
+Implemented multiple classification models to predict stock price direction (up/down) across 1D, 5D, and 20D horizons:
 
 - Logistic Regression
 - Random Forest (default)
 - Random Forest (tuned with Optuna)
 
-Model selection is performed individually for each stock, and the best-performing model is saved for prediction.
+Model selection is performed individually for each stock and prediction horizon, and the best-performing model is saved for prediction.
+
+### 🕐 Prediction Horizons
+
+StockVision supports three prediction horizons:
+
+- **1D** — next trading day
+- **5D** — next 5 trading days
+- **20D** — next 20 trading days
+
+A separate final model is selected and saved for every stock and every horizon, giving **8 stocks × 3 horizons = 24 final models**.
 
 ### 📋 Model Evaluation
 Models are evaluated using:
@@ -60,13 +70,14 @@ Built using Streamlit and Plotly.
 Dashboard includes:
 
 - Latest market overview (close price, daily change, volume)
-- AI-based price movement prediction with confidence score
+- ML-based price movement prediction with model confidence
 - Interactive stock price chart (Line & Candlestick)
 - Configurable time-range selection (1M / 3M / 6M / 1Y / 5Y / ALL)
 - SMA & EMA overlays
 - RSI visualization with overbought/oversold zones
 - MACD visualization with signal line and histogram
-- Model performance comparison across stocks
+- Model performance comparison across stocks and prediction horizons
+- All-stock prediction summary for the selected horizon
 
 ---
 
@@ -86,7 +97,7 @@ StockVision/
 ├── models/
 │   ├── best_rf_params.json
 │   └── final/
-│       └── *.joblib     # One trained model per stock
+│       └── *.joblib     # One trained model per stock and prediction horizon
 │
 ├── notebooks/
 │   ├── 01_data_collection.ipynb
@@ -108,10 +119,11 @@ StockVision/
 │   ├── clean_data.py           # Cleans and deduplicates raw data
 │   ├── feature_engineering.py  # Adds technical indicators
 │   ├── prepare_ml_data.py      # Builds the ML-ready target/feature table
-│   ├── prediction.py           # Loads a trained model and predicts next move
+│   ├── prediction.py           # Loads a trained model and predicts price direction
 │   ├── data_loader.py          # Loads processed data for the dashboard
 │   └── company_info.py         # Static company metadata (sector, exchange, etc.)
 │
+├── run_pipeline.py       # Automates data update and optional full retraining
 ├── app.py                # Streamlit dashboard entry point
 ├── requirements.txt
 └── README.md
@@ -121,22 +133,26 @@ StockVision/
 
 ## 🖼️ About the `images/` Folder
 
-The `images/` folder currently holds **exploratory-analysis charts**, not dashboard screenshots:
+The `images/` folder contains both **EDA/comparative-analysis visualizations** and **Streamlit dashboard screenshots** used in this README.
 
-- `closing_price_trend.png` — single-stock closing price trend
+### EDA & Comparative Analysis
+
+- `closing_price_trend.png` — closing price trend
 - `multi_company_closing_prices.png` — closing price comparison across all 8 stocks
-- `normalized_comparison.png` — normalized price comparison (US vs India)
-- `price_distribution.png` — return/price distribution analysis
+- `normalized_comparison.png` — normalized price comparison across US and Indian stocks
+- `price_distribution.png` — price/return distribution analysis
 
-These were generated during the EDA / comparative-analysis notebooks and are referenced in the **Exploratory Data Analysis** section below — no action needed for these.
+### Streamlit Dashboard Screenshots
 
-However, this README also references **dashboard screenshots** (`dashboard_overview.png`, `dashboard_rsi.png`, `dashboard_macd.png`) that don't exist yet in the folder. To finish the README:
-
-1. Run the dashboard locally: `streamlit run app.py`
-2. Take screenshots of: the overview/metrics section, the price chart, the RSI panel, and the MACD panel
-3. Save them into `images/` using the filenames referenced in the **Dashboard Preview** section below (or update the filenames in this README to match whatever you name them)
-
----
+- `dashboard_overview.png` — dashboard overview with stock selection and market metrics
+- `dashboard_price_chart.png` — interactive price history chart
+- `dashboard_candlestick.png` — candlestick price visualization
+- `dashboard_indicators.png` — technical indicator overlays
+- `dashboard_rsi.png` — RSI analysis with overbought/oversold levels
+- `dashboard_macd.png` — MACD, signal line, and histogram
+- `dashboard_ml_prediction.png` — ML prediction, confidence, and selected model
+- `dashboard_model_performance.png` — model accuracy and model comparison
+- `dashboard_all_stock.png` — all-stock prediction summary for the selected horizon
 
 ## 📌 Workflow
 
@@ -175,6 +191,10 @@ Streamlit Dashboard      (app.py)
 ```
 
 ---
+
+## 📅 Data Coverage
+
+StockVision uses historical OHLCV market data collected from Yahoo Finance. The regular update workflow is designed to refresh the dataset through the **latest available market session, up to the previous trading day**.
 
 ## 📈 Stocks Included
 
@@ -236,12 +256,17 @@ Streamlit Dashboard      (app.py)
 
 ## 📸 Dashboard Preview
 
-> Screenshots below are placeholders — see the [`images/` folder note](#️-about-the-images-folder) above for how to generate and add them.
+### Dashboard Overview
+![Dashboard Overview](images/dashboard_overview.png)
 
-### Overview
-![Dashboard Overview](images/dashboard_metrics.png)
-### Price Chart
-![Dashboard Overview](images/dashboard_price_chart.png)
+### Interactive Price Chart
+![Dashboard Price Chart](images/dashboard_price_chart.png)
+
+### Candlestick Chart
+![Candlestick Chart](images/dashboard_candlestick.png)
+
+### Technical Indicators
+![Technical Indicators](images/dashboard_indicators.png)
 
 ### Relative Strength Index (RSI)
 ![RSI](images/dashboard_rsi.png)
@@ -249,37 +274,75 @@ Streamlit Dashboard      (app.py)
 ### Moving Average Convergence Divergence (MACD)
 ![MACD](images/dashboard_macd.png)
 
----
+### ML Prediction
+![ML Prediction](images/dashboard_ml_prediction.png)
 
-## ⚡ Installation
+### Model Performance
+![Model Performance](images/dashboard_model_performance.png)
 
-Clone the repository
+### All-Stock Summary
+![All Stock Summary](images/dashboard_all_stock.png)
+
+## ⚡ Installation & Running the Project
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Prins-Satapara/StockVision.git
-```
-
-Move into the project directory
-
-```bash
 cd StockVision
 ```
 
-Install dependencies
+### 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the Streamlit application
+### 3. Reproduce the complete ML pipeline
+
+Use this command for the **first-time setup** or whenever you want to reproduce/retrain all machine learning models:
+
+```bash
+python run_pipeline.py --retrain
+```
+
+This runs the complete pipeline including:
+
+- Data collection
+- Data cleaning
+- Feature engineering
+- ML data preparation
+- Model training
+- Hyperparameter tuning
+- Final model selection
+- Final model training
+- Prediction pipeline
+
+The project supports **1D, 5D, and 20D** prediction horizons.
+
+### 4. Update with the latest market data
+
+For a normal daily update, use:
+
+```bash
+python run_pipeline.py
+```
+
+This updates the stock data and runs the regular prediction workflow using the existing trained final models.
+
+The data collection is designed to keep the project data updated through the **latest available market session (up to the previous trading day)**.
+
+### 5. Launch the Streamlit dashboard
+
+After the pipeline has completed:
 
 ```bash
 streamlit run app.py
 ```
 
-> **Note:** The dashboard reads from `data/processed/`, `models/final/`, and `results/final_model_selection.csv`. If you're starting from raw data instead of the files already included in this repo, run the pipeline notebooks/scripts in order (see **Workflow** above) before launching the app.
+Then open the local Streamlit URL shown in the terminal.
 
----
+> **Recommended workflow:** Use `python run_pipeline.py --retrain` for the first setup or when you want to retrain the ML models. Use `python run_pipeline.py` for routine data updates, then launch Streamlit.
 
 ## 📊 Machine Learning Pipeline
 
@@ -292,8 +355,10 @@ streamlit run app.py
 7. Random Forest
 8. Hyperparameter Tuning (Optuna)
 9. Final Model Selection
-10. Prediction Pipeline
-11. Streamlit Deployment
+10. Final Model Selection
+11. Multi-Horizon Prediction Pipeline (1D / 5D / 20D)
+12. Automated Pipeline (`run_pipeline.py`)
+13. Streamlit Dashboard
 
 ---
 
@@ -304,15 +369,12 @@ streamlit run app.py
 - Deep learning models (LSTM)
 - Portfolio analysis
 - Model explainability using SHAP
+- FastAPI & Docker Integration
 - Cloud deployment
 
 ---
 
-## ⚠️ Disclaimer
-
-This project is intended for educational and learning purposes only.
-
-The predictions generated by the machine learning models should **not** be considered financial advice or investment recommendations.
+> **Note:** StockVision is an educational machine learning project. Predictions are model outputs based on historical market data and should not be treated as financial advice.
 
 ---
 

@@ -3,19 +3,28 @@ import joblib
 from src.config import FINAL_MODELS_DIR, FEATURES
 from src.data_loader import load_stock_data
 
-def load_model(stock):
+VALID_HORIZONS = ["1D", "5D", "20D"]
+
+def load_model(stock, horizon = "1D"):
     
-    model_path = FINAL_MODELS_DIR / f"{stock}_model.joblib"
+    if horizon not in VALID_HORIZONS:
+        raise ValueError(
+            f"Invalid horizon: {horizon}. "
+            f"Choose from {VALID_HORIZONS}"
+        )
+    
+    
+    model_path = FINAL_MODELS_DIR / f"{stock}_{horizon}_model.joblib"
     model = joblib.load(model_path)
     
     return model
 
-
-def predict_stock(stock):
+    
+def predict_stock(stock, horizon = "1D"):
     
     # load data and model
     df = load_stock_data(stock=stock)
-    model = load_model(stock=stock)
+    model = load_model(stock=stock, horizon=horizon)
     
     
     # get the latest features    
@@ -39,6 +48,7 @@ def predict_stock(stock):
     
     return {
         "Stock": stock,
+        "Horizon": horizon,
         "Date": latest_date.strftime("%Y-%m-%d"),
         "Prediction": direction,
         "Probability": round(float(confidence) * 100, 2)
