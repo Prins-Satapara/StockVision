@@ -1,22 +1,28 @@
-# Data (regenerate via src/download_data.py -> clean_data.py -> feature_engineering.py -> prepare_ml_data.py)
-data/raw/
-data/cleaned/
-data/processed/
-data/ml_ready/
+# Data
+data/
 
-# Trained model artifacts (regenerate by running notebooks 06/07)
-models/*.joblib
+# Trained Models
+models/final/*.joblib
+models/best_rf_params.json
+
+# Generated Results
+results/*.csv
+results/*.json
 
 # Jupyter
 .ipynb_checkpoints/
 
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Virtual environments
 .venv/
 venv/
+env/
 
-# Editor
+# Editor / IDE
 .vscode/
 .idea/
 
