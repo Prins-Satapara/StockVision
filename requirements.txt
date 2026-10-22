@@ -3,6 +3,10 @@ pandas
 numpy
 yfinance
 
+# Statistical analysis
+scipy
+statsmodels
+
 # Visualization
 matplotlib
 seaborn

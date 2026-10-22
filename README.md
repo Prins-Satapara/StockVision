@@ -22,6 +22,10 @@ The project is built for educational purposes and demonstrates how machine learn
 - Volatility comparison
 - Correlation analysis
 - Comparative study between US and Indian markets
+- Normality testing (Jarque-Bera, Q-Q plots) and fat-tail analysis
+- Hypothesis testing (t-test, Welch t-test, Levene test, Kruskal-Wallis test)
+- Stationarity (ADF test) and autocorrelation / volatility-clustering analysis
+- Target class-balance and feature-redundancy analysis linking EDA to the ML models
 
 ### ⚙️ Feature Engineering
 Technical indicators including:
@@ -104,12 +108,16 @@ StockVision/
 │   ├── 02_data_cleaning.ipynb
 │   ├── 03_EDA.ipynb
 │   ├── 04_Comparative_Analysis.ipynb
+│   ├── 04b_Statistical_EDA.ipynb
 │   ├── 05_Feature_Engineering.ipynb
 │   ├── 06_ml_data_preparation.ipynb
 │   ├── 07_model_training.ipynb
 │   ├── 08_Hyperparameter_Tuning.ipynb
 │   ├── 09_Final_Model_Evaluation.ipynb
 │   └── 10_prediction_pipeline.ipynb
+│
+├── docs/
+│   └── EDA_Presentation_Notes.md   # Talk outline + viva Q&A for the EDA
 │
 ├── results/             # Model comparison CSVs (logistic, default RF, tuned RF)
 │
@@ -142,6 +150,21 @@ The `images/` folder contains both **EDA/comparative-analysis visualizations** a
 - `normalized_comparison.png` — normalized price comparison across US and Indian stocks
 - `price_distribution.png` — price/return distribution analysis
 
+### Statistical EDA (notebook `04b_Statistical_EDA.ipynb`)
+
+- `eda_return_vs_volatility.png` — annualised return and volatility of all 8 stocks
+- `eda_return_distributions.png` — daily return histograms vs normal curve
+- `eda_qq_plots.png` — Q-Q plots (AAPL, TCS)
+- `eda_returns_boxplot.png` — daily return box plots
+- `eda_rolling_volatility.png` — 60-day rolling volatility (US vs India)
+- `eda_returns_correlation.png` — correlation heatmap of daily returns
+- `eda_us_vs_india_distribution.png` — US vs India portfolio return densities
+- `eda_weekday_effect.png` — mean return by weekday with test p-values
+- `eda_acf_returns.png` — autocorrelation of returns vs squared returns
+- `eda_target_balance.png` — class balance of the 1D / 5D / 20D targets
+- `eda_feature_correlation.png` — correlation between engineered features
+- `eda_feature_target_correlation.png` — feature vs next-day direction
+
 ### Streamlit Dashboard Screenshots
 
 - `dashboard_overview.png` — dashboard overview with stock selection and market metrics
@@ -166,7 +189,7 @@ Data Collection       (src/download_data.py)
 Data Cleaning          (src/clean_data.py)
       │
       ▼
-EDA & Comparative Analysis   (notebooks 03, 04)
+EDA & Comparative Analysis   (notebooks 03, 04, 04b)
       │
       ▼
 Feature Engineering     (src/feature_engineering.py)
@@ -220,6 +243,7 @@ StockVision uses historical OHLCV market data collected from Yahoo Finance. The 
 ### Data Analysis
 - NumPy
 - Pandas
+- SciPy & Statsmodels (statistical tests)
 
 ### Visualization
 - Matplotlib
@@ -251,6 +275,28 @@ StockVision uses historical OHLCV market data collected from Yahoo Finance. The 
 
 ### Price/Return Distribution
 ![Price Distribution](images/price_distribution.png)
+
+### Statistical EDA of Daily Returns
+
+Notebook `04b_Statistical_EDA.ipynb` studies the daily returns of all 8 stocks.
+
+**Key findings**
+
+- Data is clean (no missing values / duplicates), except 6 zero-volume days shared by all Indian stocks.
+- Returns are **not normal** (Jarque-Bera p ≈ 0) and have **fat tails**: days beyond ±3σ occur about 4–6× more often than a normal model predicts.
+- US stocks earned higher returns with higher risk than Indian stocks (Welch t-test p = 0.02, Levene test p ≈ 0).
+- US and Indian stocks are weakly correlated (≈ 0.09), while stocks inside one market are correlated (≈ 0.55 US, ≈ 0.34 India).
+- Prices are **non-stationary**, returns are **stationary**; volatility **clusters** but direction is hardly predictable.
+- No reliable day-of-week effect (none significant after Bonferroni correction).
+- The share of "Up" days grows with the horizon (up to 66% at 20D), and many engineered features are redundant (correlation > 0.99).
+
+![Return Distributions](images/eda_return_distributions.png)
+
+![Returns Correlation](images/eda_returns_correlation.png)
+
+![Rolling Volatility](images/eda_rolling_volatility.png)
+
+![Target Balance](images/eda_target_balance.png)
 
 ---
 
