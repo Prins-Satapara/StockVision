@@ -116,9 +116,6 @@ StockVision/
 │   ├── 09_Final_Model_Evaluation.ipynb
 │   └── 10_prediction_pipeline.ipynb
 │
-├── docs/
-│   └── EDA_Presentation_Notes.md   # Talk outline + viva Q&A for the EDA
-│
 ├── results/             # Model comparison CSVs (logistic, default RF, tuned RF)
 │
 ├── src/
