@@ -273,6 +273,12 @@ StockVision uses historical OHLCV market data collected from Yahoo Finance. The 
 ### Price/Return Distribution
 ![Price Distribution](images/price_distribution.png)
 
+### Annualized volatility
+![Annualized Historical Volatility](images/annualised_historical_volatility.png)
+
+## Risk-Return Comparision
+![Risk Return Comparision](images/risk_return_comparision.png)
+
 ### Statistical EDA of Daily Returns
 
 Notebook `04b_Statistical_EDA.ipynb` studies the daily returns of all 8 stocks.

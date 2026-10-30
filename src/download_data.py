@@ -2,20 +2,12 @@ import yfinance as yf
 import pandas as pd
 from pathlib import Path
 from datetime import datetime, timedelta
+from src.config import STOCKS
 
 
 def download_stocks(save_path): 
         
-    stocks = [
-        "AAPL",          # Apple
-        "MSFT",          # Microsoft
-        "NVDA",          # NVIDIA
-        "AMZN",          # Amazon
-        "RELIANCE.NS",   # Reliance
-        "TCS.NS",        # TCS
-        "HDFCBANK.NS",   # HDFC Bank
-        "INFY.NS"        # Infosys
-    ]
+    stocks = STOCKS
 
     save_path = Path(save_path)
     save_path.mkdir(parents=True, exist_ok=True)
@@ -57,13 +49,12 @@ def download_stocks(save_path):
                 ignore_index=True
             )
             
-            updated_df.drop_duplicates(
+            updated_df = updated_df.drop_duplicates(
                 subset=["Date"], 
-                keep="last",
-                inplace=True
+                keep="last"
             )
             
-            updated_df.sort_values("Date", inplace=True)
+            updated_df = updated_df.sort_values("Date")
             
             updated_df.to_csv(file_path, index=False)
             
